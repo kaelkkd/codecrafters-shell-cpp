@@ -1,8 +1,8 @@
 #include <iostream>
 #include <cstdlib>
 #include <filesystem>
-#include <vector>
 #include <sstream>
+#include <fstream>
 
 enum commands {
   quit,
@@ -48,9 +48,6 @@ int main() {
     std::getline(std::cin, input);
     
     switch (checkCommand(input)) {
-      case invalid:
-        std::cout << input << ": command not found" << std::endl;
-        break;
       case quit:
         return 0;
       case echo:
@@ -69,6 +66,21 @@ int main() {
           }
           else {
             std::cout << inputType<< " is " << envPath << std::endl;
+          }
+        }
+        break;
+      }
+      case invalid: {
+        std::string command = input.substr(0, input.find(' '));
+        std::string commandPath = getPath(command);
+
+        if (commandPath.empty()) {
+          std::cout << input << ": command not found" << std::endl;
+        } 
+        else {
+          int result = std::system(input.c_str());
+          if (result != 0) {
+            std::cout << input << ": command failed" << std::endl;
           }
         }
         break;
