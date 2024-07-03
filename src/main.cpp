@@ -8,7 +8,8 @@ enum commands {
   quit,
   echo,
   invalid,
-  type
+  type,
+  pwd
 };
 
 std::string getPath(std::string commandPath) {
@@ -28,10 +29,17 @@ std::string getPath(std::string commandPath) {
   return "";
 }
 
+void getWorkingDirectory() {
+  std::filesystem::path cwd = std::filesystem::current_path();
+  std::string cwdString = cwd.generic_string();
+  std::cout << cwdString << std::endl;
+}
+
 commands checkCommand(std::string command) {
   if (command == "exit" || command == "exit 0") return quit;
   else if (command.substr(0, 4) == "echo") return echo;
   else if (command.substr(0, 4) == "type") return type;
+  else if (command.substr(0, 3) == "pwd") return pwd;
 
   else return invalid;
 }
@@ -85,6 +93,9 @@ int main() {
         }
         break;
       }
+      case pwd:
+        getWorkingDirectory();
+        break;
     }
   } 
 }
