@@ -45,6 +45,10 @@ void changeWorkingDirectory(std::string input) {
     const std::filesystem::path newDir = dir;
     std::filesystem::current_path(newDir);
   }
+  else if (dir == "~") {
+    const std::filesystem::path homeDir = std::getenv("HOME");
+    std::filesystem::current_path(homeDir);
+  }
   else {
     std::cout << "cd: " << dir << ": No such file or directory" << std::endl;
   }
